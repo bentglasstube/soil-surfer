@@ -2,14 +2,11 @@
 
 #include <cmath>
 
-#include "util.h"
-
 #define STB_PERLIN_IMPLEMENTATION
 #include "stb_perlin.h"
 
-Map::Map() :
-  tiles_("tiles.png", 8, 16, 16),
-  rng_(Util::random_seed()),
+Map::Map(unsigned int seed) :
+  tiles_("tiles.png", 8, 16, 16), rng_(seed),
   seed_(std::uniform_real_distribution<double>(0.0, 256.0)(rng_))
 {}
 

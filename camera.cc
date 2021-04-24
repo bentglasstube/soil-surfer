@@ -8,11 +8,11 @@ double clamp(double value, double min, double max) {
   return value;
 }
 
-Camera::Camera(Point start) :
+Camera::Camera(unsigned int seed, Point start) :
   xo_(start.x - kWidth / 2),
   yo_(start.y - kHeight / 2),
   shake_(0.0),
-  rng_(48), bell_(0, 2) {}
+  rng_(seed), bell_(0, 2) {}
 
 void Camera::update(const Player& p, unsigned int elapsed) {
   double max = kMaxSpeed * elapsed;

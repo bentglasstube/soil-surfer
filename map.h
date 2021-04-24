@@ -10,7 +10,7 @@
 
 class Map {
   public:
-    Map();
+    Map(unsigned int seed);
 
     void draw(Graphics& graphics, long xo, long yo) const;
 
@@ -20,6 +20,8 @@ class Map {
     void spawn_food(const GridPoint& head);
 
     bool eat_food(const GridPoint& head);
+
+    void destroy(const GridPoint& p) { dig(p); eat_food(p); }
 
   private:
 

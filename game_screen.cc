@@ -3,8 +3,11 @@
 #include <algorithm>
 #include <sstream>
 
+#include "util.h"
+
 GameScreen::GameScreen() :
-  map_(), player_(map_), camera_(player_.head().center()),
+  rng_(Util::random_seed()),
+  map_(rng_()), player_(map_), camera_(rng_(), player_.head().center()),
   text_("text.png"),
   food_counter_(500), pede_counter_(0),
   max_depth_(0.0) {}
@@ -32,13 +35,22 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   food_counter_ -= elapsed;
   if (food_counter_ < 0) {
     map_.spawn_food(player_.head());
-    food_counter_ += 1000;
+    food_counter_ += std::uniform_int_distribution<int>(1000, 3000)(rng_);
   }
 
   if (max_depth_ >= 1.0) pede_counter_ -= elapsed;
   if (pede_counter_ < 0) {
-    pedes_.emplace_back(player_.head() + GridPoint(30, 0), 10);
-    pede_counter_ += 30000;
+    pede_counter_ += std::uniform_int_distribution<int>(20000, 40000)(rng_);
+
+    const long q = std::uniform_int_distribution<int>(15, 35)(rng_);
+    const long r = std::uniform_int_distribution<int>(0, 2)(rng_);
+    const long l = 2 * std::uniform_int_distribution<int>(3, 7)(rng_);
+
+    if (std::uniform_real_distribution<double>(0, 1)(rng_) < 0.5) {
+      pedes_.emplace_back(player_.head() + GridPoint(q, r), l, Direction::W);
+    } else {
+      pedes_.emplace_back(player_.head() + GridPoint(-q - r, r), l, Direction::E);
+    }
   }
 
   if (map_.eat_food(player_.head())) {

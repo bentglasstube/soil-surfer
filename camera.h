@@ -7,7 +7,7 @@
 class Camera {
   public:
 
-    Camera(Point start);
+    Camera(unsigned int seed, Point start);
 
     void update(const Player& focus, unsigned int elapsed);
     void shake(double intensity);

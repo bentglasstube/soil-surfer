@@ -1,52 +1,53 @@
 #include "centipede.h"
 
-Centipede::Centipede(GridPoint head, int length) :
+Centipede::Centipede(GridPoint head, int length, Direction travel) :
   sprites_("pedes.png", 8, 16, 16),
-  head_(head), length_(length), timer_(0) {}
+  head_(head), travel_(travel),
+  length_(length), timer_(0) {}
 
 void Centipede::update(Map& map, unsigned int elapsed) {
   timer_ += elapsed;
   if (timer_ > 100) {
-    head_ = head_.apply(Direction::W);
+    head_ = head_.apply(travel_);
 
-    map.dig(head_);
-    map.dig(head_.apply(Direction::NE));
-    map.dig(head_.apply(Direction::SE));
+    map.destroy(head_);
+    map.destroy(head_.apply(up()));
+    map.destroy(head_.apply(down()));
 
-    map.eat_food(head_);
-    map.eat_food(head_.apply(Direction::NE));
-    map.eat_food(head_.apply(Direction::SE));
-
-    timer_ -= 200;
+    timer_ -= 100;
   }
 }
 
 void Centipede::draw(Graphics& graphics, long xo, long yo) const {
   const Point hd = head_.draw_point();
-  const Point top = head_.apply(Direction::NE).draw_point();
-  const Point bot = head_.apply(Direction::SE).draw_point();
+  const Point top = head_.apply(up()).draw_point();
+  const Point bot = head_.apply(down()).draw_point();
 
-  sprites_.draw(graphics, 32, hd.x - xo, hd.y - yo);
-  sprites_.draw(graphics, 25, top.x - xo, top.y - yo);
-  sprites_.draw(graphics, 41, bot.x - xo, bot.y - yo);
+  const int stride = travel_ == Direction::W ? 16 : -16;
+  const bool flip = travel_ != Direction::W;
+
+  sprites_.draw_ex(graphics, 32, hd.x - xo, hd.y - yo, flip, 0, 0, 0);
+  sprites_.draw_ex(graphics, 25, top.x - xo, top.y - yo, flip, 0, 0, 0);
+  sprites_.draw_ex(graphics, 41, bot.x - xo, bot.y - yo, flip, 0, 0, 0);
 
   for (int i = 1; i < length_ - 1; ++i) {
-    sprites_.draw(graphics, 33, hd.x - xo + 16 * i, hd.y - yo);
-    sprites_.draw(graphics, 26, top.x - xo + 16 * i, top.y - yo);
-    sprites_.draw(graphics, 42, bot.x - xo + 16 * i, bot.y - yo);
+    sprites_.draw_ex(graphics, 33, hd.x - xo + stride * i, hd.y - yo, flip, 0, 0 ,0);
+    sprites_.draw_ex(graphics, 26, top.x - xo + stride * i, top.y - yo, flip, 0, 0 ,0);
+    sprites_.draw_ex(graphics, 42, bot.x - xo + stride * i, bot.y - yo, flip, 0, 0 ,0);
   }
 
-  sprites_.draw(graphics, 33, hd.x - xo + 16 * length_ - 16, hd.y - yo);
-  sprites_.draw(graphics, 36, hd.x - xo + 16 * length_, hd.y - yo);
-  sprites_.draw(graphics, 27, top.x - xo + 16 * length_ - 16, top.y - yo);
-  sprites_.draw(graphics, 43, bot.x - xo + 16 * length_ - 16, bot.y - yo);
+  sprites_.draw_ex(graphics, 33, hd.x - xo + stride * length_ - stride , hd.y - yo, flip, 0, 0 ,0);
+  sprites_.draw_ex(graphics, 36, hd.x - xo + stride * length_, hd.y - yo, flip, 0, 0 ,0);
+  sprites_.draw_ex(graphics, 27, top.x - xo + stride * length_ - stride , top.y - yo, flip, 0, 0 ,0);
+  sprites_.draw_ex(graphics, 43, bot.x - xo + stride * length_ - stride , bot.y - yo, flip, 0, 0 ,0);
 }
 
 bool Centipede::touching(GridPoint gp) const {
+  const int stride = travel_ == Direction::W ? 1 : -1;
   for (int i = 0; i < length_; ++i) {
-    if (gp == head_ + GridPoint(i, 0)) return true;
-    if (gp == head_.apply(Direction::NE) + GridPoint(i, 0)) return true;
-    if (gp == head_.apply(Direction::SE) + GridPoint(i, 0)) return true;
+    if (gp == head_ + GridPoint(i * stride, 0)) return true;
+    if (gp == head_.apply(up()) + GridPoint(i * stride, 0)) return true;
+    if (gp == head_.apply(down()) + GridPoint(i * stride, 0)) return true;
   }
 
   return gp == tail();

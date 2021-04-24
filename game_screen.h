@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #include "screen.h"
 #include "text.h"
 
@@ -18,6 +20,8 @@ class GameScreen : public Screen {
     Screen* next_screen() const override;
 
   private:
+
+    std::mt19937 rng_;
 
     Map map_;
     Player player_;

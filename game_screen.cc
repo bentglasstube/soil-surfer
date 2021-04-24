@@ -1,6 +1,6 @@
 #include "game_screen.h"
 
-GameScreen::GameScreen() : camera_(), map_(), player_() {}
+GameScreen::GameScreen() : camera_(), map_(), player_(), food_counter_(500) {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (input.key_pressed(Input::Button::Left)) player_.turn_left();
@@ -8,6 +8,16 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
   player_.update(map_, elapsed);
   camera_.update(player_, elapsed);
+
+  food_counter_ -= elapsed;
+  if (food_counter_ < 0) {
+    map_.spawn_food(player_.head());
+    food_counter_ += 1000;
+  }
+
+  if (map_.eat_food(player_.head())) {
+    // idk play a sound or something?
+  }
 
   return true;
 }

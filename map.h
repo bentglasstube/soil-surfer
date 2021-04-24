@@ -6,7 +6,7 @@ class Map {
   public:
     Map();
 
-    void draw(Graphics& graphics) const;
+    void draw(Graphics& graphics, long xo, long yo) const;
 
     struct GridPoint;
 

@@ -5,15 +5,13 @@
 
 Map::Map() : tiles_("tiles.png", 8, 16, 16) {}
 
-void Map::draw(Graphics &graphics) const {
+void Map::draw(Graphics &graphics, long xo, long yo) const {
   // TODO faster screen covering if needed
-  for (long y = -kTileSize; y < graphics.height() + kTileSize; y += kTileSize) {
-    for (long x = -kTileSize; x < graphics.width() + kTileSize; x += kTileSize) {
-      const auto gp = Point(x, y).to_grid();
+  for (long y = 0; y < graphics.height() + kTileSize; y += kTileSize) {
+    for (long x = 0; x < graphics.width() + kTileSize; x += kTileSize) {
+      const auto gp = Point(x - xo, y - yo).to_grid();
       const auto dp = gp.draw_point();
-
-      // TODO get tile at gp
-      tiles_.draw(graphics, static_cast<int>(get_tile(gp)), dp.x, dp.y);
+      tiles_.draw(graphics, static_cast<int>(get_tile(gp)), dp.x + xo, dp.y + yo);
     }
   }
 }

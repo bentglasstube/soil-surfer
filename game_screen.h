@@ -16,4 +16,5 @@ class GameScreen : public Screen {
   private:
 
     Map map_;
+    double xo_, yo_;
 };

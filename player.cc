@@ -80,6 +80,15 @@ void Player::eat() {
   vim_ += 0.25;
 }
 
+void Player::injure(const Centipede& pede) {
+  int n = 0;
+  for (auto& s : segments_) {
+    if (n > 0 || pede.touching(s.p)) ++n;
+  }
+
+  vim_ -= n;
+}
+
 bool Player::occupying(const GridPoint& gp) const {
   for (const auto& s : segments_) {
     if (s.p == gp) return true;

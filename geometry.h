@@ -21,14 +21,14 @@ struct Direction {
 
 class GridPoint;
 struct Point {
-  const long x, y;
+  long x, y;
 
   Point(long x, long y) : x(x), y(y) {}
 
   GridPoint to_grid() const;
 
-  Point operator+(Point other) const { return Point(x + other.x, y + other.y); }
-  Point operator-(Point other) const { return Point(x - other.x, y - other.y); }
+  Point operator+(const Point& other) const { return Point(x + other.x, y + other.y); }
+  Point operator-(const Point& other) const { return Point(x - other.x, y - other.y); }
 };
 
 class GridPoint {
@@ -48,8 +48,11 @@ class GridPoint {
     GridPoint apply(Direction d) const;
     bool operator==(const GridPoint& other) const { return q() == other.q() && r() == other.r(); }
 
+    GridPoint operator+(const GridPoint& other) const { return GridPoint(q() + other.q(), r() + other.r()); }
+    GridPoint operator-(const GridPoint& other) const { return GridPoint(q() - other.q(), r() - other.r()); }
+
   private:
-    const long q_, r_;
+    long q_, r_;
 };
 
 namespace std {

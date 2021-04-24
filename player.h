@@ -4,6 +4,7 @@
 
 #include "spritemap.h"
 
+#include "centipede.h"
 #include "geometry.h"
 #include "map.h"
 
@@ -20,6 +21,7 @@ class Player {
     void turn_left();
     void turn_right();
     void eat();
+    void injure(const Centipede& pede);
 
     GridPoint head() const { return segments_.front().p; }
 

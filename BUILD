@@ -29,6 +29,7 @@ cc_library(
         "@libgam//:screen",
         "@libgam//:text",
         ":camera",
+        ":centipede",
         ":map",
         ":player",
     ],
@@ -54,6 +55,7 @@ cc_library(
     hdrs = [ "player.h" ],
     deps = [
         "@libgam//:spritemap",
+        ":centipede",
         ":map",
     ],
 )
@@ -72,4 +74,15 @@ cc_library(
     name = "geometry",
     srcs = ["geometry.cc"],
     hdrs = ["geometry.h"],
+)
+
+cc_library(
+    name = "centipede",
+    srcs = ["centipede.cc"],
+    hdrs = ["centipede.h"],
+    deps = [
+        "@libgam//:spritemap",
+        ":geometry",
+        ":map",
+    ]
 )

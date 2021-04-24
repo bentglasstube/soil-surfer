@@ -4,6 +4,7 @@
 #include "text.h"
 
 #include "camera.h"
+#include "centipede.h"
 #include "map.h"
 #include "player.h"
 
@@ -23,6 +24,8 @@ class GameScreen : public Screen {
     Camera camera_;
     Text text_;
 
-    int food_counter_;
+    int food_counter_, pede_counter_;
     double max_depth_;
+
+    std::vector<Centipede> pedes_;
 };

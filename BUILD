@@ -18,13 +18,23 @@ cc_binary(
 cc_library(
     name = "screens",
     srcs = [
+        "game_screen.cc",
         "title_screen.cc",
     ],
     hdrs = [
+        "game_screen.h",
         "title_screen.h",
     ],
     deps = [
         "@libgam//:screen",
         "@libgam//:text",
+        "map",
     ],
+)
+
+cc_library(
+    name = "map",
+    srcs = [ "map.cc" ],
+    hdrs = [ "map.h" ],
+    deps = [ "@libgam//:spritemap" ],
 )

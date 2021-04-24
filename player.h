@@ -10,7 +10,7 @@
 class Player {
   public:
 
-    Player();
+    Player(const Map& map);
 
     void update(Map& map, unsigned int elapsed);
     void draw(Graphics& graphics, long xo, long yo) const;

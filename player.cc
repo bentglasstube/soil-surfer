@@ -1,11 +1,8 @@
 #include "player.h"
 
-Player::Player() : sprites_("worm.png", 8, 16, 16), power_(0), vim_(5.0) {
-  // TODO randomize starting position more
-  segments_.emplace_back(GridPoint(6, 6, -12), Direction::SE, Direction::W);
-  for (size_t i = 1; i < 5; ++i) {
-    segments_.emplace_back(GridPoint(6 - i, 6, i - 12), Direction::E, Direction::W);
-  }
+Player::Player(const Map& map) : sprites_("worm.png", 8, 16, 16), power_(100), vim_(5.0) {
+  segments_.emplace_back(GridPoint(6, 6), Direction::SE, Direction::W);
+  while (drop(map)) power_ = 100;
 }
 
 void Player::update(Map& map, unsigned int elapsed) {

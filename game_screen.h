@@ -24,4 +24,5 @@ class GameScreen : public Screen {
     Text text_;
 
     int food_counter_;
+    double max_depth_;
 };

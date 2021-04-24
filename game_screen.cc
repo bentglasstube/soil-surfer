@@ -2,7 +2,10 @@
 
 #include <sstream>
 
-GameScreen::GameScreen() : camera_(), map_(), player_(), text_("text.png"), food_counter_(500) {}
+GameScreen::GameScreen() :
+  camera_(), map_(), player_(map_),
+  text_("text.png"),
+  food_counter_(500), max_depth_(0.0) {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (input.key_pressed(Input::Button::Left)) player_.turn_left();
@@ -22,6 +25,9 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     player_.eat();
   }
 
+  const double depth = player_.head().center().y / 8 * 0.005;
+  if (depth > max_depth_) max_depth_ = depth;
+
   return true;
 }
 
@@ -34,11 +40,9 @@ void GameScreen::draw(Graphics& graphics) const {
   camera_.outer_focus().draw(graphics, camera_.xoffset(), camera_.yoffset(), 0xff0000ff, false);
 #endif
 
-  const double depth = player_.head().center().y / 8 * 0.005;
-
   std::ostringstream out;
   out.precision(2);
-  out << "Depth: " << std::fixed << depth << "m";
+  out << "Depth: " << std::fixed << max_depth_ << "m";
   text_.draw(graphics, out.str(), 4, 204);
 }
 

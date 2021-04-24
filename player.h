@@ -33,6 +33,8 @@ class Player {
       Direction forward, backward;
 
       Segment(GridPoint p, Direction f, Direction b) : p(p), forward(f), backward(b) {}
+
+      int sprite() const;
     };
 
     SpriteMap sprites_;

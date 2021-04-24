@@ -1,6 +1,8 @@
 #include "game_screen.h"
 
-GameScreen::GameScreen() : camera_(), map_(), player_(), food_counter_(500) {}
+#include <sstream>
+
+GameScreen::GameScreen() : camera_(), map_(), player_(), text_("text.png"), food_counter_(500) {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (input.key_pressed(Input::Button::Left)) player_.turn_left();
@@ -17,6 +19,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
 
   if (map_.eat_food(player_.head())) {
     // idk play a sound or something?
+    player_.eat();
   }
 
   return true;
@@ -31,6 +34,12 @@ void GameScreen::draw(Graphics& graphics) const {
   camera_.outer_focus().draw(graphics, camera_.xoffset(), camera_.yoffset(), 0xff0000ff, false);
 #endif
 
+  const double depth = player_.head().center().y / 8 * 0.005;
+
+  std::ostringstream out;
+  out.precision(2);
+  out << "Depth: " << std::fixed << depth << "m";
+  text_.draw(graphics, out.str(), 4, 204);
 }
 
 Screen* GameScreen::next_screen() const {

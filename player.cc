@@ -1,6 +1,6 @@
 #include "player.h"
 
-Player::Player() : sprites_("worm.png", 8, 16, 16), power_(0) {
+Player::Player() : sprites_("worm.png", 8, 16, 16), power_(0), vim_(5.0) {
   // TODO randomize starting position more
   segments_.emplace_back(GridPoint(6, 6, -12), Direction::SE, Direction::W);
   for (size_t i = 1; i < 5; ++i) {
@@ -9,18 +9,26 @@ Player::Player() : sprites_("worm.png", 8, 16, 16), power_(0) {
 }
 
 void Player::update(Map& map, unsigned int elapsed) {
+  vim_ -= elapsed / 30000.0;
+
   power_ += elapsed;
   if (power_ > 1000) power_ = 1000;
   if (drop(map)) return;
 
   auto& head = segments_.front();
   auto target = head.p.apply(head.forward);
-  int strength = map.strength(target);
-  if (power_ > strength) {
-    power_ -= strength;
-    advance();
-    map.dig(target);
+  if (!occupying(target)) {
+    int strength = map.strength(target);
+    if (power_ > strength) {
+      power_ -= strength;
+      grow();
+      map.dig(target);
+    }
   }
+
+  while (segments_.size() > std::ceil(vim_)) segments_.pop_back();
+
+  // TODO if vim_ <= 1 you dead
 }
 
 void Player::draw(Graphics& graphics, long xo, long yo) const {
@@ -42,11 +50,6 @@ void Player::grow() {
   const auto& head = segments_.front();
   const auto facing = head.forward;
   segments_.emplace_front(head.p.apply(facing), facing, facing.opposite());
-}
-
-void Player::advance() {
-  grow();
-  segments_.pop_back();
 }
 
 bool Player::drop(const Map& map) {
@@ -79,6 +82,10 @@ void Player::turn_right() {
   }
 }
 
+void Player::eat() {
+  vim_ += 0.25;
+}
+
 bool Player::occupying(const GridPoint& gp) const {
   for (const auto& s : segments_) {
     if (s.p == gp) return true;
@@ -96,7 +103,7 @@ bool Player::check_and_move(const Map& map, Direction d) {
       if (power_ > s) {
         power_ -= s;
         head.forward = d;
-        advance();
+        grow();
         return true;
       }
     } else {

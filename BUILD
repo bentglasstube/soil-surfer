@@ -35,6 +35,12 @@ cc_library(
 cc_library(
     name = "map",
     srcs = [ "map.cc" ],
-    hdrs = [ "map.h" ],
-    deps = [ "@libgam//:spritemap" ],
+    hdrs = [
+        "map.h",
+        "stb_perlin.h"
+    ],
+    deps = [
+        "@libgam//:spritemap",
+        "@libgam//:util",
+    ],
 )

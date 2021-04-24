@@ -1,5 +1,7 @@
 #pragma once
 
+#include <random>
+
 #include "spritemap.h"
 
 class Map {
@@ -29,11 +31,13 @@ class Map {
 
   private:
 
-    enum class TileType { Air, Dirt, Tunnel, Rock };
+    enum class TileType { Air, Dirt, WetDirt, Tunnel, Rock };
 
     static constexpr int kTileSize = 8;
 
     SpriteMap tiles_;
+    std::mt19937 rng_;
+    double surface_seed_;
 
     TileType get_tile(const GridPoint& gp) const;
 };

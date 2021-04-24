@@ -3,10 +3,10 @@
 GameScreen::GameScreen() : map_(), xo_(0.0), yo_(0.0) {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
-  if (input.key_held(Input::Button::Up)) yo_ += elapsed / 100.0;
-  if (input.key_held(Input::Button::Down)) yo_ -= elapsed / 100.0;
-  if (input.key_held(Input::Button::Left)) xo_ += elapsed / 100.0;
-  if (input.key_held(Input::Button::Right)) xo_ -= elapsed / 100.0;
+  if (input.key_held(Input::Button::Up)) yo_ += elapsed / 10.0;
+  if (input.key_held(Input::Button::Down)) yo_ -= elapsed / 10.0;
+  if (input.key_held(Input::Button::Left)) xo_ += elapsed / 10.0;
+  if (input.key_held(Input::Button::Right)) xo_ -= elapsed / 10.0;
 
   return true;
 }

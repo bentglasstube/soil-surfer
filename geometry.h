@@ -19,7 +19,7 @@ struct Direction {
   Value value;
 };
 
-struct GridPoint;
+class GridPoint;
 struct Point {
   const long x, y;
 

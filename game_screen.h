@@ -18,9 +18,9 @@ class GameScreen : public Screen {
 
   private:
 
-    Camera camera_;
     Map map_;
     Player player_;
+    Camera camera_;
     Text text_;
 
     int food_counter_;

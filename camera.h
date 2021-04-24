@@ -7,7 +7,7 @@
 class Camera {
   public:
 
-    Camera();
+    Camera(Point start);
 
     void update(const Player& focus, unsigned int elapsed);
 

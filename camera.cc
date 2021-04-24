@@ -6,7 +6,7 @@ double clamp(double value, double min, double max) {
   return value;
 }
 
-Camera::Camera() : xo_(0.0), yo_(0.0) {}
+Camera::Camera(Point start) : xo_(start.x - kWidth / 2), yo_(start.y - kHeight / 2) {}
 
 void Camera::update(const Player& p, unsigned int elapsed) {
   double max = kMaxSpeed * elapsed;
@@ -14,7 +14,7 @@ void Camera::update(const Player& p, unsigned int elapsed) {
   const auto f = p.head().center();
   const Rect target = inner_focus();
 
-  if (!outer_focus().contains(f.x, f.y)) max *= 1.5;
+  if (!outer_focus().contains(f.x, f.y)) max *= 2;
 
   if (f.x < target.left) {
     xo_ -= std::min(target.left - f.x, max);

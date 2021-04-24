@@ -3,7 +3,7 @@
 #include <sstream>
 
 GameScreen::GameScreen() :
-  camera_(), map_(), player_(map_),
+  map_(), player_(map_), camera_(player_.head().center()),
   text_("text.png"),
   food_counter_(500), max_depth_(0.0) {}
 

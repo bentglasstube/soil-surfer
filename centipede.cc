@@ -6,7 +6,7 @@ Centipede::Centipede(GridPoint head, int length) :
 
 void Centipede::update(Map& map, unsigned int elapsed) {
   timer_ += elapsed;
-  if (timer_ > 200) {
+  if (timer_ > 100) {
     head_ = head_.apply(Direction::W);
 
     map.dig(head_);

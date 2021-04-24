@@ -48,6 +48,8 @@ class GridPoint {
     GridPoint apply(Direction d) const;
     bool operator==(const GridPoint& other) const { return q() == other.q() && r() == other.r(); }
 
+    long dist(const GridPoint& other) const;
+
     GridPoint operator+(const GridPoint& other) const { return GridPoint(q() + other.q(), r() + other.r()); }
     GridPoint operator-(const GridPoint& other) const { return GridPoint(q() - other.q(), r() - other.r()); }
 

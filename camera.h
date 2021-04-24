@@ -10,9 +10,10 @@ class Camera {
     Camera(Point start);
 
     void update(const Player& focus, unsigned int elapsed);
+    void shake(double intensity);
 
-    long xoffset() const { return std::round(xo_); }
-    long yoffset() const { return std::round(yo_); }
+    long xoffset() const { return std::round(xo_ + shake_ * bell_(rng_)); }
+    long yoffset() const { return std::round(yo_ + shake_ * bell_(rng_)); }
 
     Rect inner_focus() const;
     Rect outer_focus() const;
@@ -27,4 +28,8 @@ class Camera {
     static constexpr double kMaxSpeed = 0.03;
 
     double xo_, yo_;
+    double shake_;
+
+    mutable std::mt19937 rng_;
+    mutable std::normal_distribution<double> bell_;
 };

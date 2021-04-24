@@ -44,3 +44,7 @@ GridPoint GridPoint::apply(Direction d) const {
 
   return GridPoint(q(), r());
 }
+
+long GridPoint::dist(const GridPoint& other) const {
+  return (std::abs(other.q() - q()) + std::abs(other.r() - r()) + std::abs(other.s() - s())) / 2;
+}

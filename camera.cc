@@ -1,12 +1,18 @@
 #include "camera.h"
 
+#include <random>
+
 double clamp(double value, double min, double max) {
   if (min > value) return min;
   if (max < value) return max;
   return value;
 }
 
-Camera::Camera(Point start) : xo_(start.x - kWidth / 2), yo_(start.y - kHeight / 2) {}
+Camera::Camera(Point start) :
+  xo_(start.x - kWidth / 2),
+  yo_(start.y - kHeight / 2),
+  shake_(0.0),
+  rng_(48), bell_(0, 2) {}
 
 void Camera::update(const Player& p, unsigned int elapsed) {
   double max = kMaxSpeed * elapsed;
@@ -30,6 +36,12 @@ void Camera::update(const Player& p, unsigned int elapsed) {
 
   xo_ = clamp(xo_, f.x - kWidth, f.x);
   yo_ = clamp(yo_, f.y - kHeight, f.y);
+
+  shake_ = 0.0;
+}
+
+void Camera::shake(double intensity) {
+  if (intensity > shake_) shake_ = std::min(1.0, intensity);
 }
 
 Rect Camera::inner_focus() const {

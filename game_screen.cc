@@ -19,6 +19,9 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   for (auto& p : pedes_) {
     p.update(map_, elapsed);
     player_.injure(p);
+    const long dist = player_.head().dist(p.head());
+    const double intensity = 1 - ((dist - 5) * (dist - 5) / 625.0);
+    camera_.shake(intensity);
   }
 
   pedes_.erase(std::remove_if( pedes_.begin(), pedes_.end(),
@@ -35,7 +38,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (max_depth_ >= 1.0) pede_counter_ -= elapsed;
   if (pede_counter_ < 0) {
     pedes_.emplace_back(player_.head() + GridPoint(30, 0), 10);
-    pede_counter_ += 15000;
+    pede_counter_ += 30000;
   }
 
   if (map_.eat_food(player_.head())) {

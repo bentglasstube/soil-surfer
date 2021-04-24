@@ -21,15 +21,33 @@ class GameScreen : public Screen {
 
   private:
 
+    enum class State { Running, Paused, Dead };
+
     std::mt19937 rng_;
 
     Map map_;
     Player player_;
     Camera camera_;
     Text text_;
+    State state_;
+
+    class Fader {
+      public:
+        Fader();
+
+        void reset(Graphics::Color color, unsigned int duration);
+        void draw(Graphics& graphics) const;
+        void update(unsigned int elapsed);
+
+      private:
+        Graphics::Color color_;
+        unsigned int duration_, timer_;
+    };
 
     int food_counter_, pede_counter_;
     double max_depth_;
+
+    Fader fader_;
 
     std::vector<Centipede> pedes_;
 };

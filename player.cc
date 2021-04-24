@@ -23,8 +23,6 @@ void Player::update(Map& map, unsigned int elapsed) {
   }
 
   while (segments_.size() > std::ceil(vim_)) segments_.pop_back();
-
-  // TODO if vim_ <= 1 you dead
 }
 
 void Player::draw(Graphics& graphics, long xo, long yo) const {

@@ -24,6 +24,7 @@ class Player {
     void injure(const Centipede& pede);
 
     GridPoint head() const { return segments_.front().p; }
+    bool dead() const { return vim_ <= 1; }
 
   private:
 

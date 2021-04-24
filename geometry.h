@@ -35,7 +35,6 @@ class GridPoint {
   public:
     GridPoint(long q, long r, long) : GridPoint(q, r) {}
     GridPoint(long q, long r) : q_(q), r_(r) {}
-    GridPoint(const GridPoint& gp) : GridPoint(gp.q(), gp.r()) {}
     GridPoint(const Point& p) : GridPoint(p.to_grid()) {}
 
     Point center() const;

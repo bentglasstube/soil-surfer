@@ -33,8 +33,9 @@ Map::Direction Map::Direction::opposite() const {
     case SE: return NW;
     case SW: return NE;
     case W:  return E;
-    default: assert(false);
   }
+
+  return value;
 }
 
 int Map::Direction::angle(Value other) const {
@@ -68,8 +69,9 @@ Map::GridPoint Map::GridPoint::apply(Map::Direction d) const {
     case Direction::SE: return GridPoint(q, r + 1, s - 1);
     case Direction::SW: return GridPoint(q - 1, r + 1, s);
     case Direction::W:  return GridPoint(q - 1, r, s + 1);
-    default:            assert(false);
   }
+
+  return GridPoint(q, r, s);
 }
 
 Map::TileType Map::get_tile(const Map::GridPoint& gp) const {

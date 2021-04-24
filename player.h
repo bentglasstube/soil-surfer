@@ -18,6 +18,8 @@ class Player {
     void turn_left();
     void turn_right();
 
+    Map::GridPoint head() const { return segments_.front().p; }
+
   private:
 
     struct Segment {

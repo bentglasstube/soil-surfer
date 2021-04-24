@@ -29,8 +29,13 @@ class Map {
     struct GridPoint;
     struct Point {
       const long x, y;
+
       Point(long x, long y) : x(x), y(y) {}
+
       GridPoint to_grid() const;
+
+      Point operator+(Point other) const { return Point(x + other.x, y + other.y); }
+      Point operator-(Point other) const { return Point(x - other.x, y - other.y); }
     };
 
     struct GridPoint {
@@ -41,6 +46,7 @@ class Map {
       GridPoint(const GridPoint& gp) : GridPoint(gp.q, gp.r) {}
       GridPoint(const Point& p) : GridPoint(p.to_grid()) {}
 
+      Point center() const;
       Point draw_point() const;
 
       GridPoint apply(Direction d) const;

@@ -2,6 +2,7 @@
 
 #include "screen.h"
 
+#include "camera.h"
 #include "map.h"
 #include "player.h"
 
@@ -16,7 +17,9 @@ class GameScreen : public Screen {
 
   private:
 
+    Camera camera_;
     Map map_;
     Player player_;
-    double xo_, yo_;
+
+    int timer_;
 };

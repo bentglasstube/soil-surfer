@@ -28,6 +28,7 @@ cc_library(
     deps = [
         "@libgam//:screen",
         "@libgam//:text",
+        ":camera",
         ":map",
         ":player",
     ],
@@ -54,4 +55,14 @@ cc_library(
         "@libgam//:spritemap",
         ":map",
     ],
+)
+
+cc_library(
+    name = "camera",
+    srcs = [ "camera.cc" ],
+    hdrs = [ "camera.h" ],
+    deps = [
+        "@libgam//:rect",
+        ":player",
+    ]
 )

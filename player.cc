@@ -14,13 +14,13 @@ void Player::draw(Graphics& graphics, long xo, long yo) const {
   auto head = segments_.begin();
 
   const auto& hdp = head->p.draw_point();
-  sprites_.draw(graphics, static_cast<int>(head->forward), hdp.x + xo, hdp.y + yo);
+  sprites_.draw(graphics, static_cast<int>(head->forward), hdp.x - xo, hdp.y - yo);
   head = std::next(head);
 
   while (head != segments_.end()) {
     const auto& dp = (*head).p.draw_point();
     const int n = static_cast<int>(head->forward) + 8;
-    sprites_.draw(graphics, n, dp.x + xo, dp.y + yo);
+    sprites_.draw(graphics, n, dp.x - xo, dp.y - yo);
     head = std::next(head);
   }
 }

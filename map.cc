@@ -18,9 +18,9 @@ void Map::draw(Graphics &graphics, long xo, long yo) const {
   // TODO faster screen covering if needed
   for (long y = 0; y < graphics.height() + kTileSize; y += kTileSize) {
     for (long x = 0; x < graphics.width() + kTileSize; x += kTileSize) {
-      const auto gp = Point(x - xo, y - yo).to_grid();
+      const auto gp = Point(x + xo, y + yo).to_grid();
       const auto dp = gp.draw_point();
-      tiles_.draw(graphics, static_cast<int>(get_tile(gp)), dp.x + xo, dp.y + yo);
+      tiles_.draw(graphics, static_cast<int>(get_tile(gp)), dp.x - xo, dp.y - yo);
     }
   }
 }
@@ -52,8 +52,12 @@ Map::GridPoint::GridPoint(long q, long r, long s) : q(q), r(r), s(s) {
   assert(q + r + s == 0);
 }
 
+Map::Point Map::GridPoint::center() const {
+  return Point(q * 2 * kTileSize + r * kTileSize, r * 3 * kTileSize / 2);
+}
+
 Map::Point Map::GridPoint::draw_point() const {
-  return Point(q * 2 * kTileSize + r * kTileSize - kTileSize, r * 3 * kTileSize / 2 - kTileSize);
+  return center() - Point(kTileSize, kTileSize);
 }
 
 Map::GridPoint Map::GridPoint::apply(Map::Direction d) const {

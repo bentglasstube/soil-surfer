@@ -3,17 +3,11 @@
 GameScreen::GameScreen() : camera_(), map_(), player_(map_), timer_(0) {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
-  if (input.key_pressed(Input::Button::A)) player_.advance();
   if (input.key_pressed(Input::Button::Left)) player_.turn_left();
   if (input.key_pressed(Input::Button::Right)) player_.turn_right();
 
+  player_.update(map_, elapsed);
   camera_.update(player_, elapsed);
-
-  timer_ += elapsed;
-  if (timer_ > 300) {
-    player_.advance();
-    timer_ -= 300;
-  }
 
   return true;
 }

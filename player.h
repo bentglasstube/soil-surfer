@@ -11,9 +11,11 @@ class Player {
 
     Player(const Map& map);
 
+    void update(Map& map, unsigned int elapsed);
     void draw(Graphics& graphics, long xo, long yo) const;
     void grow();
     void advance();
+    bool drop(const Map& map);
 
     void turn_left();
     void turn_right();
@@ -31,5 +33,8 @@ class Player {
 
     SpriteMap sprites_;
     std::list<Segment> segments_;
+    int power_;
 
+    bool occupying(const Map::GridPoint& gp) const;
+    bool check_and_move(const Map& map, Map::Direction dir);
 };

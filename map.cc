@@ -74,6 +74,24 @@ Map::GridPoint Map::GridPoint::apply(Map::Direction d) const {
   return GridPoint(q, r, s);
 }
 
+int Map::strength(const Map::GridPoint& gp) const {
+  auto t = get_tile(gp);
+  switch (t) {
+    case TileType::Air:
+    case TileType::Tunnel:
+      return 50;
+
+    case TileType::WetDirt:
+      return 300;
+
+    case TileType::Dirt:
+      return 500;
+
+    default:
+      return 9000;
+  }
+}
+
 Map::TileType Map::get_tile(const Map::GridPoint& gp) const {
   const int sky_height = 12 + (int)(12 * stb_perlin_turbulence_noise3(gp.q / 60.0, 0, surface_seed_, 2.0f, 0.5f, 6));
   if (gp.r <= sky_height) return TileType::Air;

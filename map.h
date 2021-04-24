@@ -50,7 +50,10 @@ class Map {
       Point draw_point() const;
 
       GridPoint apply(Direction d) const;
+      bool operator==(const GridPoint& other) const { return q == other.q && r == other.r; }
     };
+
+    int strength(const GridPoint& gp) const;
 
   private:
 

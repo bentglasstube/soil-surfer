@@ -18,9 +18,8 @@ void Player::update(Map& map, unsigned int elapsed) {
   auto& head = segments_.front();
   auto target = head.p.apply(head.forward);
   if (!occupying(target)) {
-    int strength = map.strength(target);
-    if (power_ > strength) {
-      power_ -= strength;
+    if (power_ > map.strength(target)) {
+      power_ = 0;
       grow();
       map.dig(target);
     }
@@ -70,7 +69,6 @@ void Player::turn_left() {
   auto& head = segments_.front();
   if (head.forward.left().angle(head.backward) > 90) {
     head.forward = head.forward.left();
-    power_ = 0;
   }
 }
 
@@ -78,7 +76,6 @@ void Player::turn_right() {
   auto& head = segments_.front();
   if (head.forward.right().angle(head.backward) > 90) {
     head.forward = head.forward.right();
-    power_ = 0;
   }
 }
 
@@ -101,7 +98,7 @@ bool Player::check_and_move(const Map& map, Direction d) {
     if (head.backward.angle(d) > 90) {
       int s = map.strength(target);
       if (power_ > s) {
-        power_ -= s;
+        power_ = 0;
         head.forward = d;
         grow();
         return true;

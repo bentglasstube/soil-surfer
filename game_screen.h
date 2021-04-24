@@ -20,6 +20,4 @@ class GameScreen : public Screen {
     Camera camera_;
     Map map_;
     Player player_;
-
-    int timer_;
 };

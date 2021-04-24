@@ -1,6 +1,6 @@
 #include "game_screen.h"
 
-GameScreen::GameScreen() : camera_(), map_(), player_(), timer_(0) {}
+GameScreen::GameScreen() : camera_(), map_(), player_() {}
 
 bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   if (input.key_pressed(Input::Button::Left)) player_.turn_left();

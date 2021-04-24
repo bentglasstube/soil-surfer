@@ -25,6 +25,23 @@ void Map::draw(Graphics &graphics, long xo, long yo) const {
   }
 }
 
+Map::Direction Map::Direction::opposite() const {
+  switch (value) {
+    case NW: return SE;
+    case NE: return SW;
+    case E:  return W;
+    case SE: return NW;
+    case SW: return NE;
+    case W:  return E;
+    default: assert(false);
+  }
+}
+
+int Map::Direction::angle(Value other) const {
+  const int diff = std::abs(value - other);
+  return 60 * (diff > 3 ? 6 - diff : diff);
+}
+
 Map::GridPoint Map::Point::to_grid() const {
   const double px = x / (double)kTileSize;
   const double py = y / (double)kTileSize;
@@ -37,6 +54,18 @@ Map::GridPoint::GridPoint(long q, long r, long s) : q(q), r(r), s(s) {
 
 Map::Point Map::GridPoint::draw_point() const {
   return Point(q * 2 * kTileSize + r * kTileSize - kTileSize, r * 3 * kTileSize / 2 - kTileSize);
+}
+
+Map::GridPoint Map::GridPoint::apply(Map::Direction d) const {
+  switch (d) {
+    case Direction::NW: return GridPoint(q, r - 1, s + 1);
+    case Direction::NE: return GridPoint(q + 1, r - 1, s);
+    case Direction::E:  return GridPoint(q + 1, r, s - 1);
+    case Direction::SE: return GridPoint(q, r + 1, s - 1);
+    case Direction::SW: return GridPoint(q - 1, r + 1, s);
+    case Direction::W:  return GridPoint(q - 1, r, s + 1);
+    default:            assert(false);
+  }
 }
 
 Map::TileType Map::get_tile(const Map::GridPoint& gp) const {

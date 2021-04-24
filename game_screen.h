@@ -3,6 +3,7 @@
 #include "screen.h"
 
 #include "map.h"
+#include "player.h"
 
 class GameScreen : public Screen {
   public:
@@ -16,5 +17,6 @@ class GameScreen : public Screen {
   private:
 
     Map map_;
+    Player player_;
     double xo_, yo_;
 };

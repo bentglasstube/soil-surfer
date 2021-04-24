@@ -10,8 +10,23 @@ class Map {
 
     void draw(Graphics& graphics, long xo, long yo) const;
 
-    struct GridPoint;
+    struct Direction {
+      enum Value : int8_t{ NW, NE, E, SE, SW, W };
 
+      Direction() = default;
+      constexpr Direction(Value v) : value(v) {}
+      operator Value() const { return value; }
+      explicit operator bool() = delete;
+      Direction opposite() const;
+      Direction left() const { return static_cast<Value>((value + 5) % 6); }
+      Direction right() const { return static_cast<Value>((value + 1) % 6); }
+      int angle(Value other) const;
+
+      Value value;
+    };
+
+
+    struct GridPoint;
     struct Point {
       const long x, y;
       Point(long x, long y) : x(x), y(y) {}
@@ -27,6 +42,8 @@ class Map {
       GridPoint(const Point& p) : GridPoint(p.to_grid()) {}
 
       Point draw_point() const;
+
+      GridPoint apply(Direction d) const;
     };
 
   private:

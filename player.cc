@@ -9,7 +9,11 @@ void Player::update(Map& map, unsigned int elapsed) {
   vim_ -= elapsed / 30000.0;
 
   power_ += elapsed;
-  if (power_ > 1000) power_ = 1000;
+  if (power_ > 1000) {
+    vim_ -= 1;
+    power_ -= 1000;
+  }
+
   if (drop(map)) return;
 
   auto& head = segments_.front();

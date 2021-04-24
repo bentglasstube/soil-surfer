@@ -24,10 +24,6 @@ GridPoint Point::to_grid() const {
   return GridPoint(std::round(px / 2.0 - py / 3.0), std::round(py * 2 / 3.0));
 }
 
-GridPoint::GridPoint(long q, long r, long s) : q_(q), r_(r) {
-  assert(q + r + s == 0);
-}
-
 Point GridPoint::center() const {
   return Point(q() * 2 * 8.0 + r() * 8.0, r() * 3 * 8.0 / 2);
 }

@@ -33,8 +33,8 @@ struct Point {
 
 class GridPoint {
   public:
-    GridPoint(long q, long r, long s);
-    GridPoint(long q, long r) : GridPoint(q, r, -q-r) {}
+    GridPoint(long q, long r, long) : GridPoint(q, r) {}
+    GridPoint(long q, long r) : q_(q), r_(r) {}
     GridPoint(const GridPoint& gp) : GridPoint(gp.q(), gp.r()) {}
     GridPoint(const Point& p) : GridPoint(p.to_grid()) {}
 

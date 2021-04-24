@@ -2,26 +2,24 @@
 
 Player::Player(const Map& map) : sprites_("worm.png", 8, 16, 16), power_(0) {
   // TODO randomize starting position more
-  segments_.emplace_back(Map::GridPoint(6, 6, -12), Map::Direction::SE, Map::Direction::W);
+  segments_.emplace_back(GridPoint(6, 6, -12), Direction::SE, Direction::W);
   for (size_t i = 1; i < 5; ++i) {
-    segments_.emplace_back(Map::GridPoint(6 - i, 6, i - 12), Map::Direction::E, Map::Direction::W);
+    segments_.emplace_back(GridPoint(6 - i, 6, i - 12), Direction::E, Direction::W);
   }
 }
 
 void Player::update(Map& map, unsigned int elapsed) {
   power_ += elapsed;
   if (power_ > 1000) power_ = 1000;
-
-  if (power_ > 50 && drop(map)) {
-    power_ -= 50;
-    return;
-  }
+  if (drop(map)) return;
 
   auto& head = segments_.front();
-  int target = map.strength(head.p.apply(head.forward));
-  if (power_ > target) {
-    power_ -= target;
+  auto target = head.p.apply(head.forward);
+  int strength = map.strength(target);
+  if (power_ > strength) {
+    power_ -= strength;
     advance();
+    map.dig(target);
   }
 }
 
@@ -54,12 +52,12 @@ void Player::advance() {
 bool Player::drop(const Map& map) {
   auto head = segments_.front();
 
-  if (head.p.r % 2 == 1) {
-    if (check_and_move(map, Map::Direction::SW)) return true;
-    if (check_and_move(map, Map::Direction::SE)) return true;
+  if (head.p.r() % 2 == 1) {
+    if (check_and_move(map, Direction::SW)) return true;
+    if (check_and_move(map, Direction::SE)) return true;
   } else {
-    if (check_and_move(map, Map::Direction::SE)) return true;
-    if (check_and_move(map, Map::Direction::SW)) return true;
+    if (check_and_move(map, Direction::SE)) return true;
+    if (check_and_move(map, Direction::SW)) return true;
   }
 
   return false;
@@ -81,24 +79,28 @@ void Player::turn_right() {
   }
 }
 
-bool Player::occupying(const Map::GridPoint& gp) const {
+bool Player::occupying(const GridPoint& gp) const {
   for (const auto& s : segments_) {
     if (s.p == gp) return true;
   }
   return false;
 }
 
-bool Player::check_and_move(const Map& map, Map::Direction d) {
+bool Player::check_and_move(const Map& map, Direction d) {
   auto& head = segments_.front();
 
   const auto target = head.p.apply(d);
-  if (map.strength(target) < 100 && ! occupying(target)) {
+  if (map.open(target) && ! occupying(target)) {
     if (head.backward.angle(d) > 90) {
-      head.forward = d;
-      advance();
-      return true;
+      int s = map.strength(target);
+      if (power_ > s) {
+        power_ -= s;
+        head.forward = d;
+        advance();
+        return true;
+      }
     } else {
-      d == Map::Direction::SW ? turn_left() : turn_right();
+      d == Direction::SW ? turn_left() : turn_right();
     }
   }
   return false;

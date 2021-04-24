@@ -44,6 +44,7 @@ cc_library(
     deps = [
         "@libgam//:spritemap",
         "@libgam//:util",
+        ":geometry",
     ],
 )
 
@@ -65,4 +66,10 @@ cc_library(
         "@libgam//:rect",
         ":player",
     ]
+)
+
+cc_library(
+    name = "geometry",
+    srcs = ["geometry.cc"],
+    hdrs = ["geometry.h"],
 )

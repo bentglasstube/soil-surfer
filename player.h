@@ -4,6 +4,7 @@
 
 #include "spritemap.h"
 
+#include "geometry.h"
 #include "map.h"
 
 class Player {
@@ -20,21 +21,21 @@ class Player {
     void turn_left();
     void turn_right();
 
-    Map::GridPoint head() const { return segments_.front().p; }
+    GridPoint head() const { return segments_.front().p; }
 
   private:
 
     struct Segment {
-      Map::GridPoint p;
-      Map::Direction forward, backward;
+      GridPoint p;
+      Direction forward, backward;
 
-      Segment(Map::GridPoint p, Map::Direction f, Map::Direction b) : p(p), forward(f), backward(b) {}
+      Segment(GridPoint p, Direction f, Direction b) : p(p), forward(f), backward(b) {}
     };
 
     SpriteMap sprites_;
     std::list<Segment> segments_;
     int power_;
 
-    bool occupying(const Map::GridPoint& gp) const;
-    bool check_and_move(const Map& map, Map::Direction dir);
+    bool occupying(const GridPoint& gp) const;
+    bool check_and_move(const Map& map, Direction dir);
 };

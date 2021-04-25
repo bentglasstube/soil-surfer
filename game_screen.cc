@@ -5,6 +5,8 @@
 
 #include "util.h"
 
+#include "title_screen.h"
+
 GameScreen::GameScreen() :
   rng_(Util::random_seed()),
   map_(rng_()), player_(map_), camera_(rng_(), player_.head().center()),
@@ -13,13 +15,14 @@ GameScreen::GameScreen() :
   food_counter_(500), pede_counter_(0),
   max_depth_(0.0), fader_() {}
 
-bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
+bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) {
   if (state_ == State::Running) {
     if (input.key_pressed(Input::Button::Left)) player_.turn_left();
     if (input.key_pressed(Input::Button::Right)) player_.turn_right();
     if (input.key_pressed(Input::Button::Start)) {
       state_ = State::Paused;
       fader_.reset(0x000000cc, 500);
+      audio.music_volume(3);
     }
 
     player_.update(map_, elapsed);
@@ -65,6 +68,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
     if (player_.dead()) {
       state_ = State::Dead;
       fader_.reset(0x000000ff, 3000);
+      audio.play_music("wormfood.ogg", true);
     }
 
     const double depth = player_.head().center().y / GridPoint::kTileSize * 0.005;
@@ -73,6 +77,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
   } else if (state_ == State::Paused) {
     if (input.key_pressed(Input::Button::Start)) {
       state_ = State::Running;
+      audio.music_volume(10);
     }
     fader_.update(elapsed);
 
@@ -125,7 +130,7 @@ void GameScreen::draw(Graphics& graphics) const {
 }
 
 Screen* GameScreen::next_screen() const {
-  return nullptr;
+  return new TitleScreen();
 }
 
 GameScreen::Fader::Fader() : color_(0), duration_(0), timer_(0) {}

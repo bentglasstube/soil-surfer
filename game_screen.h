@@ -19,6 +19,8 @@ class GameScreen : public Screen {
     void draw(Graphics&) const override;
     Screen* next_screen() const override;
 
+    std::string get_music_track() const override { return "deepdiggin.ogg"; }
+
   private:
 
     enum class State { Running, Paused, Dead };

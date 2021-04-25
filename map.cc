@@ -67,9 +67,12 @@ void Map::spawn_food(const GridPoint& head) {
   const double r = std::uniform_real_distribution<double>(15, 25)(rng_) * GridPoint::kTileSize;
 
   const auto tg = (head.center() + Point(r * std::cos(a), r * std::sin(a))).to_grid();
-  if (get_tile(tg) == TileType::WetDirt) {
-    const double t = std::uniform_real_distribution<double>(0, 1)(rng_);
-    food_.insert(std::make_pair(tg, std::floor(4 * t * t * t)));
+  const double t = std::uniform_real_distribution<double>(0, 1)(rng_);
+  const int type = std::floor(4 * t * t * t);
+  const auto tile = get_tile(tg);
+
+  if (tile == TileType::WetDirt || (tile == TileType::Dirt && type == 3)) {
+    food_.insert(std::make_pair(tg, type));
   }
 }
 

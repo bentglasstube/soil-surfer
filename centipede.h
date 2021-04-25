@@ -27,4 +27,8 @@ class Centipede {
     Direction up() const { return travel_ == Direction::W ? Direction::NE : Direction::NW; }
     Direction down() const { return travel_ == Direction::W ? Direction::SE : Direction::SW; }
 
+    void draw_legs(Graphics& graphics, long x, long y, int n) const;
+    bool flip() const { return travel_ != Direction::W; }
+    int leg_frame() const { return std::abs(head_.s() * 11) ; }
+
 };

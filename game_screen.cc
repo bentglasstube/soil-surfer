@@ -99,6 +99,15 @@ void GameScreen::draw(Graphics& graphics) const {
   camera_.outer_focus().draw(graphics, camera_.xoffset(), camera_.yoffset(), 0xff0000ff, false);
 #endif
 
+  if (player_.vim() < 2) {
+    const double opacity = 2 - player_.vim();
+    const int pixels = GridPoint::kTileSize * 2;
+    for (int i = 0; i < pixels; ++i) {
+      const int alpha = (255 - 255 * i / pixels) * opacity;
+      graphics.draw_rect({i, i}, {graphics.width() - i, graphics.height() - i}, 0xff000000 + alpha, false);
+    }
+  }
+
   if (state_ == State::Paused) {
     fader_.draw(graphics);
     // TODO make fancy pause

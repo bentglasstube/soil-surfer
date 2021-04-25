@@ -25,6 +25,7 @@ class Player {
 
     GridPoint head() const { return segments_.front().p; }
     bool dead() const { return vim_ <= 1; }
+    double vim() const { return vim_; }
 
   private:
 

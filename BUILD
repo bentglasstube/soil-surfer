@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_binary(
-    name = "ld48",
+    name = "soil-surfer",
     data = ["//content"],
     linkopts = [
         "-lSDL2",

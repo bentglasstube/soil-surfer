@@ -8,7 +8,7 @@ CONTENT=$(wildcard content/*.png) $(wildcard content/*.ogg) $(wildcard content/*
 ICONS=icon.png
 BUILDDIR=$(CROSS)output
 OBJECTS=$(patsubst %.cc,$(BUILDDIR)/%.o,$(SOURCES))
-NAME=ld48
+NAME=soil-surfer
 VERSION=$(shell git describe --tags --dirty)
 
 CC=$(CROSS)g++

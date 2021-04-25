@@ -2,8 +2,8 @@
 
 Type=Application
 Version=1.0
-Name=LD48
+Name=Soil Surfer
 Terminal=false
 Icon=icon
-Exec=ld48
+Exec=soil-surfer
 Categories=Game;

@@ -13,7 +13,7 @@ void step(void* game) {
 int main(int, char**) {
   Game::Config config;
 
-  config.graphics.title = "If you hard, then you hard";
+  config.graphics.title = "Soil Surfer";
   config.graphics.width = 1280;
   config.graphics.height = 720;
   config.graphics.scale = 3;

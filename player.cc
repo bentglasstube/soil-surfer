@@ -1,6 +1,9 @@
 #include "player.h"
 
-Player::Player(const Map& map) : sprites_("worm.png", 8, 16, 16), power_(100), vim_(5.0) {
+Player::Player(const Map& map) :
+  sprites_("worm.png", 8, GridPoint::kTileSize * 2, GridPoint::kTileSize * 2),
+  power_(100), vim_(5.0)
+{
   segments_.emplace_back(GridPoint(6, 6), Direction::SE, Direction::W);
   while (drop(map)) power_ = 100;
 }

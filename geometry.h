@@ -52,6 +52,8 @@ class GridPoint {
     GridPoint operator+(const GridPoint& other) const { return GridPoint(q() + other.q(), r() + other.r()); }
     GridPoint operator-(const GridPoint& other) const { return GridPoint(q() - other.q(), r() - other.r()); }
 
+    static constexpr double kTileSize = 16.0;
+
   private:
     long q_, r_;
 };

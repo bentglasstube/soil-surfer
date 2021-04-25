@@ -1,7 +1,7 @@
 #include "centipede.h"
 
 Centipede::Centipede(GridPoint head, int length, Direction travel) :
-  sprites_("pedes.png", 8, 16, 16),
+  sprites_("pedes.png", 8, GridPoint::kTileSize * 2, GridPoint::kTileSize * 2),
   head_(head), travel_(travel),
   length_(length), timer_(0) {}
 
@@ -23,7 +23,7 @@ void Centipede::draw(Graphics& graphics, long xo, long yo) const {
   const Point top = head_.apply(up()).draw_point();
   const Point bot = head_.apply(down()).draw_point();
 
-  const int stride = travel_ == Direction::W ? 16 : -16;
+  const int stride = GridPoint::kTileSize * (travel_ == Direction::W ? 2 : -2);
   const bool flip = travel_ != Direction::W;
 
   sprites_.draw_ex(graphics, 32, hd.x - xo, hd.y - yo, flip, 0, 0, 0);

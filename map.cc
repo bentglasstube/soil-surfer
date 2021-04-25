@@ -6,14 +6,14 @@
 #include "stb_perlin.h"
 
 Map::Map(unsigned int seed) :
-  tiles_("tiles.png", 8, 16, 16), rng_(seed),
+  tiles_("tiles.png", 8, GridPoint::kTileSize * 2, GridPoint::kTileSize * 2), rng_(seed),
   seed_(std::uniform_real_distribution<double>(0.0, 256.0)(rng_))
 {}
 
 void Map::draw(Graphics &graphics, long xo, long yo) const {
   // TODO faster screen covering if needed
-  for (long y = 0; y < graphics.height() + kTileSize; y += kTileSize) {
-    for (long x = 0; x < graphics.width() + kTileSize; x += kTileSize) {
+  for (long y = 0; y < graphics.height() + GridPoint::kTileSize; y += GridPoint::kTileSize) {
+    for (long x = 0; x < graphics.width() + GridPoint::kTileSize; x += GridPoint::kTileSize) {
       const auto gp = Point(x + xo, y + yo).to_grid();
       const auto dp = gp.draw_point();
       tiles_.draw(graphics, get_sprite(gp), dp.x - xo, dp.y - yo);
@@ -45,7 +45,7 @@ int Map::strength(const GridPoint& gp) const {
 
 void Map::spawn_food(const GridPoint& head) {
   const double a = std::uniform_real_distribution<double>(1, 5)(rng_) * M_PI / 6.0;
-  const double r = std::uniform_real_distribution<double>(15, 25)(rng_) * kTileSize;
+  const double r = std::uniform_real_distribution<double>(15, 25)(rng_) * GridPoint::kTileSize;
 
   const auto tg = (head.center() + Point(r * std::cos(a), r * std::sin(a))).to_grid();
   if (get_tile(tg) == TileType::WetDirt) food_.insert(tg);

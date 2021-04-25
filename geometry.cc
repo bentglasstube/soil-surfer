@@ -19,17 +19,17 @@ int Direction::angle(Value other) const {
 }
 
 GridPoint Point::to_grid() const {
-  const double px = x / 8.0;
-  const double py = y / 8.0;
+  const double px = x / GridPoint::kTileSize;
+  const double py = y / GridPoint::kTileSize;
   return GridPoint(std::round(px / 2.0 - py / 3.0), std::round(py * 2 / 3.0));
 }
 
 Point GridPoint::center() const {
-  return Point(q() * 2 * 8.0 + r() * 8.0, r() * 3 * 8.0 / 2);
+  return Point(q() * 2 * kTileSize + r() * kTileSize, r() * 3 * kTileSize / 2);
 }
 
 Point GridPoint::draw_point() const {
-  return center() - Point(8.0, 8.0);
+  return center() - Point(kTileSize, kTileSize);
 }
 
 GridPoint GridPoint::apply(Direction d) const {

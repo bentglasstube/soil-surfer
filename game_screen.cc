@@ -102,19 +102,19 @@ void GameScreen::draw(Graphics& graphics) const {
   if (state_ == State::Paused) {
     fader_.draw(graphics);
     // TODO make fancy pause
-    text_.draw(graphics, "P A U S E", 128, 104, Text::Alignment::Center);
+    text_.draw(graphics, "P A U S E", graphics.width() / 2, graphics.height() / 2 - 8, Text::Alignment::Center);
   }
 
   if (state_ == State::Dead) {
     fader_.draw(graphics);
-    text_.draw(graphics, "G A M E", 128, 92, Text::Alignment::Center);
-    text_.draw(graphics, "O V E R", 128, 116, Text::Alignment::Center);
+    text_.draw(graphics, "G A M E", graphics.width() / 2, graphics.height() / 2 - 12, Text::Alignment::Center);
+    text_.draw(graphics, "O V E R", graphics.width() / 2, graphics.height() / 2 + 12, Text::Alignment::Center);
   }
 
   std::ostringstream out;
   out.precision(2);
   out << "Depth: " << std::fixed << max_depth_ << "m";
-  text_.draw(graphics, out.str(), 4, 204);
+  text_.draw(graphics, out.str(), 4, graphics.height() - 20);
 }
 
 Screen* GameScreen::next_screen() const {

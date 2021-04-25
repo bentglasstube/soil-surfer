@@ -27,8 +27,6 @@ class Map {
 
     enum class TileType { Air, Dirt, WetDirt, Tunnel, Rock };
 
-    static constexpr int kTileSize = 8;
-
     SpriteMap tiles_;
     std::mt19937 rng_;
     double seed_;

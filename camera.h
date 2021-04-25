@@ -20,12 +20,12 @@ class Camera {
 
   private:
 
-    static constexpr int kWidth = 256;
-    static constexpr int kHeight = 224;
+    static constexpr int kWidth = 512;
+    static constexpr int kHeight = 448;
 
     static constexpr double kHFocus = 0.167;
     static constexpr double kVFocus = 0.25;
-    static constexpr double kMaxSpeed = 0.03;
+    static constexpr double kMaxSpeed = 0.07;
 
     double xo_, yo_;
     double shake_;

@@ -91,6 +91,6 @@ Map::TileType Map::get_tile(const GridPoint& gp) const {
 
 int Map::get_sprite(const GridPoint& gp) const {
   const int t = static_cast<int>(get_tile(gp));
-  const int v = 3 * (1 + stb_perlin_noise3(gp.q(), gp.r(), seed_, 0, 0, 0));
-  return t + 8 * v;
+  const double v = stb_perlin_noise3(gp.s() * 37.0 / 11.0, gp.r() * 41.0 / 7.0, seed_, 0, 0, 0);
+  return t + 8 * ((int)(std::abs(1000 * v)) % 6);
 }

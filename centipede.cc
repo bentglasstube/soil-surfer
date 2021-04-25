@@ -5,14 +5,14 @@ Centipede::Centipede(GridPoint head, int length, Direction travel) :
   head_(head), travel_(travel),
   length_(length), timer_(0) {}
 
-void Centipede::update(Map& map, unsigned int elapsed) {
+void Centipede::update(Audio& audio, Map& map, unsigned int elapsed) {
   timer_ += elapsed;
   if (timer_ > 100) {
     head_ = head_.apply(travel_);
 
-    map.destroy(head_);
-    map.destroy(head_.apply(up()));
-    map.destroy(head_.apply(down()));
+    map.destroy(audio, head_);
+    map.destroy(audio, head_.apply(up()));
+    map.destroy(audio, head_.apply(down()));
 
     timer_ -= 100;
   }

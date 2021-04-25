@@ -26,9 +26,25 @@ void Map::draw(Graphics &graphics, long xo, long yo) const {
   }
 }
 
-void Map::dig(const GridPoint& gp) {
-  auto t = get_tile(gp);
-  if (t != TileType::Air) overrides_.insert(std::make_pair(gp, TileType::Tunnel));
+void Map::dig(Audio& audio, const GridPoint& gp) {
+
+  // TODO sound effect
+  switch (get_tile(gp)) {
+    case TileType::Air:
+    case TileType::Tunnel:
+      return;
+
+    case TileType::Rock:
+      audio.play_random_sample("cronch.wav", 8);
+      break;
+
+    case TileType::Dirt:
+    case TileType::WetDirt:
+      // do nothing
+      break;
+  }
+
+  overrides_.insert(std::make_pair(gp, TileType::Tunnel));
 }
 
 bool Map::open(const GridPoint& gp) const {

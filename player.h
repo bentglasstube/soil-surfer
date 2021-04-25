@@ -2,6 +2,7 @@
 
 #include <list>
 
+#include "audio.h"
 #include "spritemap.h"
 
 #include "centipede.h"
@@ -13,15 +14,15 @@ class Player {
 
     Player(const Map& map);
 
-    void update(Map& map, unsigned int elapsed);
+    void update(Audio& audio, Map& map, unsigned int elapsed);
     void draw(Graphics& graphics, long xo, long yo) const;
     void grow();
     bool drop(const Map& map);
 
     void turn_left();
     void turn_right();
-    void eat(int value);
-    void injure(const Centipede& pede);
+    void eat(Audio& audio, int value);
+    void injure(Audio& audio, const Centipede& pede);
 
     GridPoint head() const { return segments_.front().p; }
     bool dead() const { return vim_ <= 1; }

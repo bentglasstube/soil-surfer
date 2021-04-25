@@ -1,5 +1,6 @@
 #pragma once
 
+#include "audio.h"
 #include "spritemap.h"
 
 #include "geometry.h"
@@ -10,7 +11,7 @@ class Centipede {
 
     Centipede(GridPoint head, int length, Direction travel);
 
-    void update(Map& map, unsigned int elapsed);
+    void update(Audio& audio, Map& map, unsigned int elapsed);
     void draw(Graphics& graphics, long xo, long yo) const;
 
     GridPoint head() const { return head_; }

@@ -8,7 +8,7 @@ Player::Player(const Map& map) :
   while (drop(map)) power_ = 100;
 }
 
-void Player::update(Map& map, unsigned int elapsed) {
+void Player::update(Audio& audio, Map& map, unsigned int elapsed) {
   vim_ -= elapsed / 30000.0;
 
   power_ += elapsed;
@@ -25,7 +25,7 @@ void Player::update(Map& map, unsigned int elapsed) {
     if (power_ > map.strength(target)) {
       power_ = 0;
       grow();
-      map.dig(target);
+      map.dig(audio, target);
     }
   }
 
@@ -80,17 +80,19 @@ void Player::turn_right() {
   }
 }
 
-void Player::eat(int value) {
+void Player::eat(Audio& audio, int value) {
   vim_ += 0.25 * value;
+  audio.play_random_sample("yum.wav", 8);
 }
 
-void Player::injure(const Centipede& pede) {
+void Player::injure(Audio& audio, const Centipede& pede) {
   int n = 0;
   for (auto& s : segments_) {
     if (n > 0 || pede.touching(s.p)) ++n;
   }
 
   vim_ = std::ceil(vim_ - n);
+  if (n > 0) audio.play_random_sample("ouch.wav", 4);
 }
 
 int Player::Segment::sprite() const {

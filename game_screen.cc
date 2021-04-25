@@ -32,12 +32,12 @@ bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) 
       audio.music_volume(3);
     }
 
-    player_.update(map_, elapsed);
+    player_.update(audio, map_, elapsed);
     camera_.update(player_, elapsed);
 
     for (auto& p : pedes_) {
-      p.update(map_, elapsed);
-      player_.injure(p);
+      p.update(audio, map_, elapsed);
+      player_.injure(audio, p);
       const long dist = player_.head().dist(p.head());
       const double intensity = 1 - ((dist - 5) * (dist - 5) / 625.0);
       camera_.shake(intensity);
@@ -45,7 +45,7 @@ bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) 
 
     pedes_.erase(std::remove_if( pedes_.begin(), pedes_.end(),
           [this](const Centipede& p) {
-            return p.tail().q() + 30 < player_.head().q();
+            return p.head().dist(player_.head()) > 69; // NICE
           }), pedes_.end());
 
     food_counter_ -= elapsed;
@@ -67,10 +67,14 @@ bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) 
       } else {
         pedes_.emplace_back(player_.head() + GridPoint(-q - r, r), l, Direction::E);
       }
+
+      audio.play_random_sample("boom.wav", 6);
     }
 
     const int food_value = map_.eat_food(player_.head());
-    if (food_value > 0) player_.eat(food_value);
+    if (food_value > 0) {
+      player_.eat(audio, food_value);
+    }
 
     if (player_.dead()) {
       state_ = State::Dead;

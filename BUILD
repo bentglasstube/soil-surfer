@@ -44,6 +44,7 @@ cc_library(
         "stb_perlin.h"
     ],
     deps = [
+        "@libgam//:audio",
         "@libgam//:spritemap",
         "@libgam//:util",
         ":geometry",
@@ -55,6 +56,7 @@ cc_library(
     srcs = [ "player.cc" ],
     hdrs = [ "player.h" ],
     deps = [
+        "@libgam//:audio",
         "@libgam//:spritemap",
         ":centipede",
         ":map",
@@ -82,6 +84,7 @@ cc_library(
     srcs = ["centipede.cc"],
     hdrs = ["centipede.h"],
     deps = [
+        "@libgam//:audio",
         "@libgam//:spritemap",
         ":geometry",
         ":map",

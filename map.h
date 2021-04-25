@@ -2,7 +2,6 @@
 
 #include <random>
 #include <unordered_map>
-#include <unordered_set>
 
 #include "spritemap.h"
 
@@ -19,7 +18,7 @@ class Map {
     int strength(const GridPoint& gp) const;
     void spawn_food(const GridPoint& head);
 
-    bool eat_food(const GridPoint& head);
+    int eat_food(const GridPoint& head);
 
     void destroy(const GridPoint& p) { dig(p); eat_food(p); }
 
@@ -32,7 +31,7 @@ class Map {
     double seed_;
 
     std::unordered_map<GridPoint, TileType> overrides_;
-    std::unordered_set<GridPoint> food_;
+    std::unordered_map<GridPoint, int> food_;
 
     TileType get_tile(const GridPoint& gp) const;
     int get_sprite(const GridPoint& gp) const;

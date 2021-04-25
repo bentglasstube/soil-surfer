@@ -80,8 +80,8 @@ void Player::turn_right() {
   }
 }
 
-void Player::eat() {
-  vim_ += 0.25;
+void Player::eat(int value) {
+  vim_ += 0.25 * value;
 }
 
 void Player::injure(const Centipede& pede) {

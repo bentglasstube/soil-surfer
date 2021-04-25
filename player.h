@@ -20,7 +20,7 @@ class Player {
 
     void turn_left();
     void turn_right();
-    void eat();
+    void eat(int value);
     void injure(const Centipede& pede);
 
     GridPoint head() const { return segments_.front().p; }

@@ -59,10 +59,8 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
       }
     }
 
-    if (map_.eat_food(player_.head())) {
-      // idk play a sound or something?
-      player_.eat();
-    }
+    const int food_value = map_.eat_food(player_.head());
+    if (food_value > 0) player_.eat(food_value);
 
     if (player_.dead()) {
       state_ = State::Dead;

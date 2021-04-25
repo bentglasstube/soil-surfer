@@ -18,7 +18,10 @@ void Map::draw(Graphics &graphics, long xo, long yo) const {
       const auto dp = gp.draw_point();
       tiles_.draw(graphics, get_sprite(gp), dp.x - xo, dp.y - yo);
 
-      if (food_.find(gp) != food_.end()) tiles_.draw(graphics, 5, dp.x - xo, dp.y - yo);
+      const auto f = food_.find(gp);
+      if (f != food_.end()) {
+        tiles_.draw(graphics, 5 + 8 * f->second, dp.x - xo, dp.y - yo);
+      }
     }
   }
 }
@@ -48,11 +51,18 @@ void Map::spawn_food(const GridPoint& head) {
   const double r = std::uniform_real_distribution<double>(15, 25)(rng_) * GridPoint::kTileSize;
 
   const auto tg = (head.center() + Point(r * std::cos(a), r * std::sin(a))).to_grid();
-  if (get_tile(tg) == TileType::WetDirt) food_.insert(tg);
+  if (get_tile(tg) == TileType::WetDirt) {
+    const double t = std::uniform_real_distribution<double>(0, 1)(rng_);
+    food_.insert(std::make_pair(tg, std::floor(4 * t * t)));
+  }
 }
 
-bool Map::eat_food(const GridPoint& head) {
-  return food_.erase(head) > 0;
+int Map::eat_food(const GridPoint& head) {
+  const auto f = food_.find(head);
+  if (f == food_.end()) return 0;
+  const int value = f->second + 1;
+  food_.erase(f);
+  return value;
 }
 
 Map::TileType Map::get_tile(const GridPoint& gp) const {

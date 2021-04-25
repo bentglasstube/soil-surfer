@@ -26,6 +26,7 @@ cc_library(
         "title_screen.h",
     ],
     deps = [
+        "@libgam//:backdrop",
         "@libgam//:screen",
         "@libgam//:text",
         ":camera",

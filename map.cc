@@ -16,9 +16,9 @@ void Map::draw(Graphics &graphics, long xo, long yo) const {
     for (long x = 0; x < graphics.width() + kTileSize; x += kTileSize) {
       const auto gp = Point(x + xo, y + yo).to_grid();
       const auto dp = gp.draw_point();
-      tiles_.draw(graphics, static_cast<int>(get_tile(gp)), dp.x - xo, dp.y - yo);
+      tiles_.draw(graphics, get_sprite(gp), dp.x - xo, dp.y - yo);
 
-      if (food_.find(gp) != food_.end()) tiles_.draw(graphics, 8, dp.x - xo, dp.y - yo);
+      if (food_.find(gp) != food_.end()) tiles_.draw(graphics, 5, dp.x - xo, dp.y - yo);
     }
   }
 }
@@ -77,4 +77,10 @@ Map::TileType Map::get_tile(const GridPoint& gp) const {
 
   if (vr < dry) return TileType::Dirt;
   return TileType::WetDirt;
+}
+
+int Map::get_sprite(const GridPoint& gp) const {
+  const int t = static_cast<int>(get_tile(gp));
+  const int v = 3 * (1 + stb_perlin_noise3(gp.q(), gp.r(), seed_, 0, 0, 0));
+  return t + 8 * v;
 }

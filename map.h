@@ -37,4 +37,5 @@ class Map {
     std::unordered_set<GridPoint> food_;
 
     TileType get_tile(const GridPoint& gp) const;
+    int get_sprite(const GridPoint& gp) const;
 };

@@ -67,7 +67,7 @@ bool GameScreen::update(const Input& input, Audio&, unsigned int elapsed) {
       fader_.reset(0x000000ff, 3000);
     }
 
-    const double depth = player_.head().center().y / 8 * 0.005;
+    const double depth = player_.head().center().y / GridPoint::kTileSize * 0.005;
     if (depth > max_depth_) max_depth_ = depth;
 
   } else if (state_ == State::Paused) {

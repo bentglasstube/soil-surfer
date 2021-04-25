@@ -47,7 +47,7 @@ class GameScreen : public Screen {
     };
 
     int food_counter_, pede_counter_;
-    double max_depth_;
+    double max_depth_, max_length_;
 
     Fader fader_;
 

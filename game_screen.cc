@@ -7,13 +7,20 @@
 
 #include "title_screen.h"
 
+std::string format(std::string label, double value, std::string unit) {
+  std::ostringstream out;
+  out.precision(2);
+  out << label << ": " << std::fixed << value << unit;
+  return out.str();
+}
+
 GameScreen::GameScreen() :
   rng_(Util::random_seed()),
   map_(rng_()), player_(map_), camera_(rng_(), player_.head().center()),
   text_("text.png"),
   state_(State::Running),
   food_counter_(500), pede_counter_(0),
-  max_depth_(0.0), fader_() {}
+  max_depth_(0.0), max_length_(0.0), fader_() {}
 
 bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) {
   if (state_ == State::Running) {
@@ -74,6 +81,9 @@ bool GameScreen::update(const Input& input, Audio& audio, unsigned int elapsed) 
     const double depth = player_.head().center().y / GridPoint::kTileSize * 0.005;
     if (depth > max_depth_) max_depth_ = depth;
 
+    const double length = player_.vim() * 0.5;
+    if (length > max_length_) max_length_ = length;
+
   } else if (state_ == State::Paused) {
     if (input.key_pressed(Input::Button::Start)) {
       state_ = State::Running;
@@ -123,10 +133,8 @@ void GameScreen::draw(Graphics& graphics) const {
     text_.draw(graphics, "O V E R", graphics.width() / 2, graphics.height() / 2 + 12, Text::Alignment::Center);
   }
 
-  std::ostringstream out;
-  out.precision(2);
-  out << "Depth: " << std::fixed << max_depth_ << "m";
-  text_.draw(graphics, out.str(), 4, graphics.height() - 20);
+  text_.draw(graphics, format("Max Depth", max_depth_, "m"), 4, graphics.height() - 40);
+  text_.draw(graphics, format("Max Length", max_length_, "cm"), 4, graphics.height() - 20);
 }
 
 Screen* GameScreen::next_screen() const {

@@ -90,7 +90,7 @@ void Player::injure(const Centipede& pede) {
     if (n > 0 || pede.touching(s.p)) ++n;
   }
 
-  vim_ -= n;
+  vim_ = std::ceil(vim_ - n);
 }
 
 int Player::Segment::sprite() const {

@@ -10,14 +10,16 @@
 std::string format(std::string label, double value, std::string unit) {
   std::ostringstream out;
   out.precision(2);
-  out << label << ": " << std::fixed << value << unit;
+  if (!label.empty()) out << label << ": ";
+  out << std::fixed << value << unit;
   return out.str();
 }
 
 GameScreen::GameScreen() :
   rng_(Util::random_seed()),
+  gameover_("gameover.png"),
   map_(rng_()), player_(map_), camera_(rng_(), player_.head().center()),
-  text_("text.png"),
+  text_("text.png"), bigtext_("bigtext.png", 24),
   state_(State::Running),
   food_counter_(500), pede_counter_(0),
   max_depth_(0.0), max_length_(0.0), fader_() {}
@@ -116,8 +118,8 @@ void GameScreen::draw(Graphics& graphics) const {
   camera_.outer_focus().draw(graphics, camera_.xoffset(), camera_.yoffset(), 0xff0000ff, false);
 #endif
 
-  if (player_.vim() < 2) {
-    const double opacity = 2 - player_.vim();
+  if (player_.vim() < 2 && state_ != State::Dead) {
+    const double opacity = std::min(1.0, 2 - player_.vim());
     const int pixels = GridPoint::kTileSize * 2;
     for (int i = 0; i < pixels; ++i) {
       const int alpha = (255 - 255 * i / pixels) * opacity;
@@ -133,8 +135,12 @@ void GameScreen::draw(Graphics& graphics) const {
 
   if (state_ == State::Dead) {
     fader_.draw(graphics);
-    text_.draw(graphics, "G A M E", graphics.width() / 2, graphics.height() / 2 - 12, Text::Alignment::Center);
-    text_.draw(graphics, "O V E R", graphics.width() / 2, graphics.height() / 2 + 12, Text::Alignment::Center);
+    if (fader_.done()) {
+      gameover_.draw(graphics);
+      bigtext_.draw(graphics, format("", max_depth_, "m"), graphics.width() / 2, graphics.height() - 128, Text::Alignment::Center);
+      bigtext_.draw(graphics, format("", max_length_, "cm"), graphics.width() / 2, graphics.height() - 64, Text::Alignment::Center);
+      return;
+    }
   }
 
   text_.draw(graphics, format("Max Depth", max_depth_, "m"), 4, graphics.height() - 40);

@@ -2,6 +2,7 @@
 
 #include <random>
 
+#include "backdrop.h"
 #include "screen.h"
 #include "text.h"
 
@@ -27,10 +28,12 @@ class GameScreen : public Screen {
 
     std::mt19937 rng_;
 
+    Backdrop gameover_;
+
     Map map_;
     Player player_;
     Camera camera_;
-    Text text_;
+    Text text_, bigtext_;
     State state_;
 
     class Fader {
@@ -40,6 +43,7 @@ class GameScreen : public Screen {
         void reset(Graphics::Color color, unsigned int duration);
         void draw(Graphics& graphics) const;
         void update(unsigned int elapsed);
+        bool done() const { return timer_ >= duration_; }
 
       private:
         Graphics::Color color_;

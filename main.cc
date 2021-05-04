@@ -16,8 +16,8 @@ int main(int, char**) {
   config.graphics.title = "Soil Surfer";
   config.graphics.width = 1280;
   config.graphics.height = 720;
-  config.graphics.scale = 3;
-  config.graphics.fullscreen = true;
+  config.graphics.scale = 1;
+  config.graphics.fullscreen = false;
 
   Game game(config);
   Screen *start = new TitleScreen();

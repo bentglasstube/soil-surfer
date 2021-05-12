@@ -1,0 +1,27 @@
+image: archlinux
+packages:
+  - fuse
+  - rsync
+  - sdl2
+  - sdl2_image
+  - sdl2_mixer
+  - wget
+sources:
+  - https://git.sr.ht/~bentglasstube/soil-surfer
+environment:
+  name: 'soil-surfer'
+secrets:
+  - 7a7c0309-95bb-4107-9e42-96352295d661
+tasks:
+  - prep: |
+      sudo wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool
+      sudo chmod +x /usr/local/bin/appimagetool
+  - build: |
+      cd $name
+      make package
+  - deploy: |
+      cd $name
+      version=$(git describe --tags)
+      short_version=$(git describe --tags --abbrev=0)
+      sshopts="ssh -o StrictHostKeyChecking=no"
+      rsync --rsh="$sshopts" -rP "$name"-linux-"$version".AppImage build@build.eatabrick.org:"$name"/"$short_version"/.
